@@ -2,6 +2,8 @@
 
 ![Design preview for the Expenses chart component coding challenge](./design/desktop-preview.jpg)
 
+Next step with my frontend journey, junior level and first approach to graphs and local json data.
+
 ## Welcome! 👋
 
 Thanks for checking out this front-end coding challenge.
