@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./images/favicon-32x32.png"
+    />
+
+    <title>Frontend Mentor | Expenses chart component</title>
+
+    <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap");
+      .attribution {
+        font-size: 11px;
+        text-align: center;
+      }
+      .attribution a {
+        color: hsl(228, 45%, 44%);
+      }
+      :root {
+        --Soft--red: hsl(10, 79%, 65%);
+        --Cyan: hsl(186, 34%, 60%);
+
+        --Dark--brown: hsl(25, 47%, 15%);
+        --Medium--brown: hsl(28, 10%, 53%);
+        --Cream: hsl(27, 66%, 92%);
+        --Very--pale--orange: hsl(33, 100%, 98%);
+      }
+      body {
+        font-size: 18px;
+        font-family: "DM Sans", sans-serif;
+        background-color: var(--Cream);
+      }
+
+      .main-section {
+        position: absolute;
+        top: 30%;
+        left: 30%;
+        transform: translate(-50% -50%);
+        width: 400px;
+        height: 470px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .top-content {
+        height: 15%;
+        background-color: var(--Soft--red);
+        display: flex;
+        justify-content: center;
+        gap: 240px;
+      }
+      .bottom-content {
+        height: 80%;
+        background-color: var(--Very--pale--orange);
+      }
+      .top-content,
+      .bottom-content {
+        width: 100%;
+        border-radius: 12px;
+      }
+      .top-content img {
+        width: 12%;
+      }
+      .balance-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .balance-container p {
+        margin: 2px;
+        color: var(--Very--pale--orange);
+      }
+      #balance-p {
+        font-size: 10px;
+      }
+      #amount {
+        font-weight: bold;
+        font-size: 18px;
+      }
+      #spending-p {
+        margin-left: 25px;
+        margin-bottom: 0px;
+        font-weight: 700;
+        font-size: 24px;
+        color: var(--Dark--brown);
+      }
+      .total-month {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        gap: 40px;
+      }
+      .total-month p {
+        margin: 0;
+      }
+      .small-p {
+        font-size: 18px;
+        color: var(--Medium--brown);
+      }
+      #percent-p {
+        color: black;
+        font-weight: 700;
+      }
+      #amount-total {
+        font-weight: 700;
+        font-size: 30px;
+        color: var(--Dark--brown);
+      }
+      .right-bottom-content {
+        text-align: right;
+      }
+      #myChart {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="main-section">
+        <div class="top-content">
+          <div class="balance-container">
+            <p id="balance-p">My balance</p>
+            <p id="amount">$921.48</p>
+          </div>
+          <img src="/images/logo.svg" alt="logo" />
+        </div>
+        <div class="bottom-content">
+          <p id="spending-p">Spending - Last 7 days</p>
+          <canvas id="myChart"></canvas>
+          <div class="total-month">
+            <div class="left-bottom-content">
+              <p class="small-p">Total this month</p>
+              <p id="amount-total">$478.33</p>
+            </div>
+            <div class="right-bottom-content">
+              <p class="small-p" id="percent-p">+2.4%</p>
+              <p class="small-p">from last month</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div class="attribution">
+      Challenge by
+      <a href="https://www.frontendmentor.io?ref=challenge" target="_blank"
+        >Frontend Mentor</a
+      >. Coded by <a href="#">Jack</a>.
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      let showChart = async function () {
+        let dataJson = await fetch("./data.json").then((response) =>
+          response.json()
+        );
+        console.log(dataJson[0].day);
+        const days = ["old"];
+        let amountArr = ["old"];
+        for (let i = 0; i < dataJson.length; i++) {
+          days[i] = dataJson[i].day;
+          amountArr[i] = dataJson[i].amount;
+        }
+
+        const ctx = document.getElementById("myChart");
+        new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: days,
+            datasets: [
+              {
+                //label: '# of Votes',
+                backgroundColor: "hsl(10, 79%, 65%)",
+
+                data: amountArr,
+                borderWidth: 1,
+                borderRadius: 5,
+              },
+            ],
+          },
+          options: {
+            plugins: {
+              legend: { display: false },
+            },
+
+            scales: {
+              y: {
+                display: false,
+                grid: { display: false },
+              },
+              x: {
+                grid: { display: false },
+              },
+            },
+          },
+        });
+      };
+      showChart();
+    </script>
+  </body>
+</html>
